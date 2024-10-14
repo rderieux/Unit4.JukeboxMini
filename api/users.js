@@ -22,7 +22,12 @@ router.get("/:id", async (req, res, next) => {
       where: { id: +id },
       include: { playlists: true },
     });
-    res.json(user);
+
+    if (user) {
+      res.json(user);
+    } else {
+      next({ status: 404, message: `User with id#: ${id} does not exist.` });
+    }
   } catch (error) {
     next(error);
   }
@@ -32,6 +37,13 @@ router.get("/:id", async (req, res, next) => {
 router.post("/:id/playlists", async (req, res, next) => {
   const { id } = req.params;
   const { name, description } = req.body;
+
+  if (!name || !description) {
+    next({
+      status: 400,
+      message: "You must provide a playlist name, and a description.",
+    });
+  }
 
   try {
     const playlist = await prisma.playlist.create({
