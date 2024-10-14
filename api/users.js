@@ -29,3 +29,16 @@ router.get("/:id", async (req, res, next) => {
 });
 // POST /users/:id/playlists creates a new playlist owned by the
 // user specified by id
+router.post("/:id/playlists", async (req, res, next) => {
+  const { id } = req.params;
+  const { name, description } = req.body;
+
+  try {
+    const playlist = await prisma.playlist.create({
+      data: { name, description, ownerId: +id },
+    });
+    res.status(201).json(playlist);
+  } catch (error) {
+    next(error);
+  }
+});

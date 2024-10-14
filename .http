@@ -5,3 +5,12 @@ GET {{host}}/users
 
 ### Get single user and playlists
 GET {{host}}/users/2
+
+### Post a playlist
+POST {{host}}/users/1/playlists
+Content-Type: application/json
+
+{
+    "name": "Chill Session",
+    "description": "Impedit cito maiores volva volup angelus molestias."
+}
